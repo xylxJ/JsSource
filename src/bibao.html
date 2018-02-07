@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<script type="text/javascript" src="jquery-3.2.1.js"></script>
+	</head>
+	<body>
+
+		<div></div>
+		<script type="text/javascript">
+		/*
+			在每个函数生成/被创建时，系统都会给它分配一个变量的环境，这个环境中也包括闭包的数据。但是，当多个环境，公用一个闭包的数据时，是一种引用的关系，这是重点。引用，不是复制。如果改变了这个公用数据，这些公用的环境获取时，也是改变后的数据
+		*/
+			var events = [] , i=0;
+			for(;i<10;i++){
+				events[i] = function(){
+					console.log(i)
+				}
+			}
+			events[0]();
+
+			/*
+			想要改变这个问题，想要每个函数都输出不同的数值，那就需要不让每个函数都公用一个闭包——让每个函数使用单独的闭包数据，不共享。只需讲for循环创建函数的部分修改为：
+			此时，i作为参数，传入匿名自动执行函数，赋值给index参数。这个匿名函数的变量环境，就把index保存了下来，而不会随着i的变化而变化。这就是要点。
+			var evens = [] , j=0;
+			for(;j<10;j++){
+				
+				evens[j] = (function(j){
+					return function(){
+						console.log(j);
+					}
+					
+				})(j)
+			}
+			evens[7]();
+
+		</script>
+	</body>
+</html>
